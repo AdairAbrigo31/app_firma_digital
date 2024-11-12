@@ -1,4 +1,4 @@
-import 'package:firmonec/presentation/screens/signed_free.dart';
+import 'package:firmonec/presentation/screens/without_quipux/signed_free.dart';
 import 'package:firmonec/presentation/widgets_app/login_button.dart';
 import 'package:flutter/material.dart';
 

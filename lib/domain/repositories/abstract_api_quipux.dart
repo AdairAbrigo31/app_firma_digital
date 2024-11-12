@@ -1,12 +1,11 @@
-import '../entities/IResponseEnElaboracion.dart';
+import 'package:firmonec/domain/entities/IResponseDocument.dart';
 import '../entities/IResponseEnviados.dart';
-import '../entities/IResponseReasignados.dart';
 import '../entities/IUser.dart';
 
 abstract class AbstractApiQuipux {
-  Future<IResponseEnElaboracion> getEnElaboracion();
+  Future<IResponseDocument> getEnElaboracion();
 
-  Future<IResponseReasignados> getReasignados();
+  Future<IResponseDocument> getReasignados();
 
   Future<IResponseEnviados> getEnviados();
 

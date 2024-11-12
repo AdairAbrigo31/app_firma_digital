@@ -1,4 +1,5 @@
 import 'package:firmonec/presentation/screens/login.dart';
+import 'package:firmonec/presentation/screens/quipux/documents_for_sign.dart';
 import 'package:flutter/material.dart';
 
 import 'config/config_api.dart';
@@ -6,7 +7,7 @@ import 'config/config_api.dart';
 void main() {
   AppConfig(typeConfig: TypeConfig.development, typeApiFirma: TypeApiFirma.firmonec);
   runApp(
-      const Login()
+      DocumentsForSign()
   );
 }
 

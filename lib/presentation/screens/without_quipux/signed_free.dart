@@ -10,7 +10,7 @@ import 'package:firmonec/helpes/get_document.dart';
 import 'package:firmonec/helpes/pickfile_custom.dart';
 import 'package:firmonec/helpes/sign_document.dart';
 import 'package:firmonec/helpes/update_document.dart';
-import 'package:firmonec/presentation/screens/dowload_share_screen.dart';
+import 'package:firmonec/presentation/screens/without_quipux/dowload_share_screen.dart';
 import 'package:firmonec/presentation/widgets_app/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';

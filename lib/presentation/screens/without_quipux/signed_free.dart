@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:firmonec/config/config_api.dart';
-import 'package:firmonec/data/repositories/api-quipux.dart';
 import 'package:firmonec/data/repositories/api_quipux_firmonec.dart';
 import 'package:firmonec/helpes/get_document.dart';
 import 'package:firmonec/helpes/pickfile_custom.dart';

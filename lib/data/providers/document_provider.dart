@@ -1,4 +1,5 @@
 
+import 'package:firmonec/domain/entities/IResonseCargo.dart';
 import 'package:flutter/material.dart';
 import '../../domain/entities/IDocument.dart';
 import '../entities/document_en_elaboracion.dart';
@@ -27,6 +28,10 @@ class DocumentProvider extends ChangeNotifier {
       notifyListeners();
 
       await Future.delayed(const Duration(seconds: 2));
+
+      // IResponseCargo responseCargo = await http.get("USAR LA URL DESDE APPCONFIG");
+      // Tratar de transformar la responseCargo en una JSON
+      // Revisar los campos de cada documento que traiga la responseCargo
 
       final responseData = [
         {

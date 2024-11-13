@@ -25,23 +25,8 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           // Puedes personalizar más el tema aquí
         ),
-        home: const HomeScreen(),
+        home: const DocumentsForSign(),
       ),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Documentos para Firmar'),
-        elevation: 2,
-      ),
-      body: const DocumentsForSign(),
     );
   }
 }

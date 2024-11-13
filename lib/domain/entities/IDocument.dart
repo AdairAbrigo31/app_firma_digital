@@ -11,19 +11,19 @@ abstract class IDocument {
     required this.title,
     required this.subject,
     required this.date,
-    required this.type
+    required this.type,
   });
 
   factory IDocument.fromJson(Map<String, dynamic> json) {
-    final String type = json["Type"];
+    final type = json['type'] as String;
+
     switch (type) {
-      case "enElaboracion":
+      case 'enElaboracion':
         return DocumentEnElaboracion.fromJson(json);
-      case "reasignado":
+      case 'reasignado':
         return DocumentReasignado.fromJson(json);
       default:
-        throw Exception("Tipo de documento no soportado: $type");
+        throw Exception('Tipo de documento no soportado: $type');
     }
   }
-
 }

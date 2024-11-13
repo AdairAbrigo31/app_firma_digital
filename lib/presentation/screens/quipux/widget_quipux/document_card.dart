@@ -25,8 +25,8 @@ class DocumentCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Title",
+              Text(
+                document.title,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -36,7 +36,7 @@ class DocumentCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                "Asunto",
+                document.subject,
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey[600],
@@ -55,7 +55,7 @@ class DocumentCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    "Fecha",
+                    document.date.toString(),
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey[600],

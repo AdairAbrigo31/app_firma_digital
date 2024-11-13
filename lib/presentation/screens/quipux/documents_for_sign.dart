@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'package:firmonec/data/providers/document_provider.dart';
+import 'package:firmonec/presentation/screens/quipux/widget_quipux/app_bar_quipux.dart';
+import 'package:firmonec/presentation/screens/quipux/widget_quipux/charge_card.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/document_card.dart';
+import 'package:firmonec/presentation/screens/quipux/widget_quipux/empty_card.dart';
+import 'package:firmonec/presentation/screens/quipux/widget_quipux/error_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../data/entities/document_en_elaboracion.dart';
@@ -34,72 +38,19 @@ class _DocumentsForSignState extends State<DocumentsForSign> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBarQuipux(),
       body: Consumer<DocumentProvider>(
         builder: (context, provider, child) {
           if (provider.isLoading && !provider.hasDocuments) {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 16),
-                  Text('Cargando documentos...'),
-                ],
-              ),
-            );
+            return const ChargeCard();
           }
 
           if (provider.error != null) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.error_outline,
-                    color: Colors.red,
-                    size: 48,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    provider.error!,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton.icon(
-                    onPressed: () => provider.fetchDocuments(),
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('Reintentar'),
-                  ),
-                ],
-              ),
-            );
+            return ErrorCard(provider: provider);
           }
 
           if (!provider.hasDocuments) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.document_scanner_outlined,
-                    size: 64,
-                    color: Colors.grey,
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'No hay documentos disponibles',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton.icon(
-                    onPressed: () => provider.refreshDocuments(),
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('Actualizar'),
-                  ),
-                ],
-              ),
-            );
+            return EmptyCard(provider: provider);
           }
 
           return Stack(

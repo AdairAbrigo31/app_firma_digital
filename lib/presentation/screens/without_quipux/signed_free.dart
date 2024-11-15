@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
-import 'package:firmonec/config/config_api.dart';
+import 'package:firmonec/data/repositories/api_quipux_espol.dart';
 import 'package:firmonec/data/repositories/api_quipux_firmonec.dart';
+import 'package:firmonec/data/repositories/api_sign_firmonec.dart';
+import 'package:firmonec/domain/repositories/api_quipux.dart';
+import 'package:firmonec/domain/repositories/api_sign.dart';
 import 'package:firmonec/helpes/get_document.dart';
 import 'package:firmonec/helpes/pickfile_custom.dart';
 import 'package:firmonec/helpes/sign_document.dart';
@@ -13,10 +16,11 @@ import 'package:firmonec/presentation/screens/without_quipux/dowload_share_scree
 import 'package:firmonec/presentation/widgets_app/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:http/http.dart' as http;
 
 class SignedFree extends StatefulWidget {
-  const SignedFree({super.key});
+  final ApiQuipux apiQuipux = new ApiQuipuxEspol();
+  final ApiSign apiSign = new ApiSignFirmonec();
+  SignedFree({super.key});
 
   @override
   SignedFreeState createState() => SignedFreeState();

@@ -81,7 +81,7 @@ Future<Map<int, String>> signDocument(
 
       print('Documento con ID $id firmado exitosamente.');
     } catch (ex) {
-      print('Error al firmar el documento con ID $id: $ex');
+      print('Fallo al hacer el signedDocument $id: $ex');
       // No se agrega al mapa si no se firma
     }
   }

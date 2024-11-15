@@ -20,26 +20,26 @@ class ApiSignFirmonec implements ApiSign {
     return data;
   }
 
-  Future<String?> _validateToken ({required Map<String, dynamic> data}) async {
-    final response = await http.post(
-      Uri.parse(AppConfig.instance.getUrlServer()),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(data),
-    );
-    if (response.statusCode == 200) {
-      print("Validacion  correcta ");
-      return json.decode(response.body)['token'];
-    } else {
+  Future<String?> _validateToken({required Map<String, dynamic> data}) async {
+    try {
+      final response = await http.post(
+        Uri.parse(AppConfig.instance.getUrlFirmonec()),
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': '4398df874a21f3633e067a8e3e1f9dcbc244271eb114549c66f374793a9a2d13'
+        },
+        body: json.encode(data),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final token = response.body;
+        return token;
+      } else {
+        return null;
+      }
+    } catch (e) {
       return null;
     }
   }
-
-  @override
-  Future<String?> getTokenForSign(String idUser, String nameDocument, String dataDocument) async {
-    Map<String, dynamic> data = await _createDataToJson(id: idUser, nameDocument: nameDocument, dataDocument: dataDocument);
-    return await _validateToken(data: data);
-  }
-
 
   @override
   Future<Map<int, Uint8List>> getDocumentValidated(String token) async {
@@ -62,7 +62,6 @@ class ApiSignFirmonec implements ApiSign {
       throw Exception('Error al obtener documentos: ${response.statusCode}');
     }
   }
-
 
   @override
   Future<dynamic> updateDocumentSigned(String token, Map<int, String> signedDocuments, String idUser) async {
@@ -98,21 +97,27 @@ class ApiSignFirmonec implements ApiSign {
       );
       if (response.statusCode == 200) {
         print('Documento recibido: ${response.body}');
-        // try {
-        //   final documentoJson = json.decode(response.body);
-        //   print('Documento como JSON: $documentoJson');
-        // } catch (e) {
-        //   print('Error al decodificar el JSON: $e');
-        // }
+        try {
+          final documentoJson = json.decode(response.body);
+          print('Documento como JSON: $documentoJson');
+        } catch (e) {
+          print('Error al decodificar el JSON: $e');
+        }
         return true;
       } else {
-        // print('Error al actualizar los documentos: ${response.statusCode}');
-        // print('Respuesta del servidor: ${response.body}');
+        print('Error al actualizar los documentos: ${response.statusCode}');
+        print('Respuesta del servidor: ${response.body}');
         return false;
       }
     } catch (e) {
       // print('Error en actualizarDocumento: $e');
       return e.toString();
     }
+  }
+
+  @override
+  Future<String?> getTokenForSign({ required String idUser,  required String nameDocument,  required String dataDocument}) async {
+    Map<String, dynamic> data = _createDataToJson(id: idUser, nameDocument: nameDocument, dataDocument: dataDocument);
+    return await _validateToken(data: data);
   }
 }

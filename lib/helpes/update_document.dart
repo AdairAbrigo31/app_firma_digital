@@ -49,10 +49,10 @@ Future<void> updateDocument(
       }
 
     } else {
-      print('Error al actualizar los documentos: ${response.statusCode}');
+      print('Fallo al hacer el update del documento: ${response.statusCode}');
       print('Respuesta del servidor: ${response.body}');
     }
   } catch (e) {
-    print('Error en actualizarDocumento: $e');
+    print('Fallo al hacer el update del documento: $e');
   }
 }

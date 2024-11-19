@@ -1,45 +1,28 @@
-abstract class IAppConfig {
-  final String urlAPISign;
-  final String urlAPIQuipux;
+class AppConfig{
+  static AppConfig? _instance;
 
-  IAppConfig({required this.urlAPISign, required this.urlAPIQuipux});
-}
+  static const String urlApiSign = "https://34.56.229.106:8080/";
+  static const String endpointApiSign = "servicio";
 
-class AppConfigFirmonec extends IAppConfig {
-  static AppConfigFirmonec? _instance;
+  static const String urlApiQuipux = "";
+  static const String endpointApiQuipux = "";
 
-  // URLs por defecto
-  static const String _defaultUrlAPISign = 'http://localhost:8081/api';
-  static const String _defaultUrlAPIQuipux = 'http://localhost:8082/api';
+  AppConfig._internal();
 
-  // Constructor privado
-  AppConfigFirmonec._({
-    required String urlAPISign,
-    required String urlAPIQuipux,
-  }) : super(
-    urlAPISign: urlAPISign,
-    urlAPIQuipux: urlAPIQuipux,
-  );
-
-  // Fábrica para obtener la instancia singleton
-  factory AppConfigFirmonec.instance({
-    String? urlAPISign,
-    String? urlAPIQuipux,
-  }) {
-    _instance ??= AppConfigFirmonec._(
-      urlAPISign: urlAPISign ?? _defaultUrlAPISign,
-      urlAPIQuipux: urlAPIQuipux ?? _defaultUrlAPIQuipux,
-    );
+  factory AppConfig(){
+    _instance ??= AppConfig._internal();
     return _instance!;
   }
 
-
-  String getUrlFirmonec() {
-    return '$urlAPISign/firmonec';
+  static AppConfig get instance {
+    if (_instance == null) {
+      throw StateError('AppConfig debe ser inicializado primero');
+    }
+    return _instance!;
   }
 
-  String getUrlQuipux() {
-    return '$urlAPIQuipux/quipux';
+  String getUrlForSign(){
+    return '$urlApiSign/$endpointApiSign';
   }
 
 }

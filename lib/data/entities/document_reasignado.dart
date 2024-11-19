@@ -6,17 +6,15 @@ class DocumentReasignado extends IDocument {
   final DateTime fechaReasignacion;
 
   DocumentReasignado({
-    required String title,
-    required String subject,
-    required DateTime date,
+    required super.title,
+    required super.subject,
+    required super.date,
+    required super.dataInBytes,
     required this.reasignadoPor,
     required this.motivoReasignacion,
-    required this.fechaReasignacion,
+    required this.fechaReasignacion
   }) : super(
-    title: title,
-    subject: subject,
-    date: date,
-    type: 'reasignado',
+    type: 'enElaboracion',
   );
 
   factory DocumentReasignado.fromJson(Map<String, dynamic> json) {
@@ -27,6 +25,7 @@ class DocumentReasignado extends IDocument {
       reasignadoPor: json['reasignadoPor'] as String,
       motivoReasignacion: json['motivoReasignacion'] as String,
       fechaReasignacion: DateTime.parse(json['fechaReasignacion'] as String),
+      dataInBytes: json['dataInBytes'] as String,
     );
   }
 }

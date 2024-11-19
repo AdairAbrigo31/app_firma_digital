@@ -1,19 +1,18 @@
 import '../../domain/entities/IDocument.dart';
+import 'dart:typed_data';
 
 class DocumentEnElaboracion extends IDocument {
   final String elaboradoPor;
   final DateTime fechaInicio;
 
   DocumentEnElaboracion({
-    required String title,
-    required String subject,
-    required DateTime date,
+    required super.title,
+    required super.subject,
+    required super.date,
+    required super.dataInBytes,
     required this.elaboradoPor,
     required this.fechaInicio,
   }) : super(
-    title: title,
-    subject: subject,
-    date: date,
     type: 'enElaboracion',
   );
 
@@ -24,6 +23,7 @@ class DocumentEnElaboracion extends IDocument {
       date: DateTime.parse(json['date'] as String),
       elaboradoPor: json['elaboradoPor'] as String,
       fechaInicio: DateTime.parse(json['fechaInicio'] as String),
+      dataInBytes: json['dataInBytes'] as String,
     );
   }
 }

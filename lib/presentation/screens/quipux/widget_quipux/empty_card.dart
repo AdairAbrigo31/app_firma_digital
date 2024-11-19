@@ -1,8 +1,9 @@
+import 'package:firmonec/data/providers/IProvider.dart';
 import 'package:firmonec/data/providers/document_provider.dart';
 import 'package:flutter/material.dart';
 
 class EmptyCard extends StatelessWidget {
-  final DocumentProvider provider;
+  final ProviderFirmonec provider;
 
   const EmptyCard({super.key, required this.provider});
 

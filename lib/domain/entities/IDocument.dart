@@ -1,17 +1,20 @@
 import '../../data/entities/document_en_elaboracion.dart';
 import '../../data/entities/document_reasignado.dart';
+import 'dart:typed_data';
 
 abstract class IDocument {
   final String title;
   final String subject;
   final DateTime date;
   final String type;
+  final String dataInBytes;
 
   IDocument({
     required this.title,
     required this.subject,
     required this.date,
     required this.type,
+    required this.dataInBytes
   });
 
   factory IDocument.fromJson(Map<String, dynamic> json) {

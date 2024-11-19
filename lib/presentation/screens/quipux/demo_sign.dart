@@ -1,5 +1,5 @@
-import 'dart:async';
-import 'package:firmonec/data/providers/document_provider.dart';
+
+import 'package:firmonec/data/providers/demo_provider.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/app_bar_quipux.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/charge_card.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/document_card.dart';
@@ -7,26 +7,31 @@ import 'package:firmonec/presentation/screens/quipux/widget_quipux/empty_card.da
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/error_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../data/entities/document_en_elaboracion.dart';
 import '../../../data/entities/document_reasignado.dart';
 import '../../../domain/entities/IDocument.dart';
 
-class DocumentsForSign extends StatefulWidget {
-  const DocumentsForSign({super.key});
+class DemoSign extends StatefulWidget {
+  const DemoSign({super.key});
 
   @override
-  State<DocumentsForSign> createState() => _DocumentsForSignState();
+  State<DemoSign> createState() => _DemoSignState();
+
+
 }
 
-class _DocumentsForSignState extends State<DocumentsForSign> {
+class _DemoSignState extends State<DemoSign> {
   final ScrollController _scrollController = ScrollController();
 
+
   @override
-  void initState() {
+  Future<void> initState() async {
     super.initState();
-    Future.microtask(
-          () => context.read<DocumentProvider>().fetchDocuments(),
-    );
+    // TODO: implement initState
+    final prefs = await SharedPreferences.getInstance();
+    String? id = prefs.getString("idUser");
   }
 
   @override
@@ -38,55 +43,55 @@ class _DocumentsForSignState extends State<DocumentsForSign> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-      ChangeNotifierProvider(create: (_) => DocumentProvider()),
-      ],
-      child: Scaffold(
-        appBar: AppBarQuipux(),
-        body: Consumer<DocumentProvider>(
-          builder: (context, provider, child) {
-            if (provider.isLoading() && !provider.hasDocuments()) {
-              return const ChargeCard();
-            }
+        providers: [
+          ChangeNotifierProvider(create: (_) => DemoProvider()),
+        ],
+        child: Scaffold(
+          appBar: AppBarQuipux(),
+          body: Consumer<DemoProvider>(
+            builder: (context, provider, child) {
+              if (provider.isLoading() && !provider.hasDocuments()) {
+                return const ChargeCard();
+              }
 
-            if (provider.error() != null) {
-              return ErrorCard(provider: provider);
-            }
+              if (provider.error() != null) {
+                return ErrorCard(provider: provider);
+              }
 
-            if (!provider.hasDocuments()) {
-              return EmptyCard(provider: provider);
-            }
+              if (!provider.hasDocuments()) {
+                return EmptyCard(provider: provider);
+              }
 
-            return Stack(
-              children: [
-                RefreshIndicator(
-                  onRefresh: provider.refreshDocuments,
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: provider.documents().length,
-                    itemBuilder: (context, index) {
-                      return DocumentCard(
-                        document: provider.documents()[index],
-                        onTap: () {
-                          // Manejar el tap en el documento
-                          _showDocumentDetails(context, provider.documents()[index]);
-                        },
-                      );
-                    },
+              return Stack(
+                children: [
+                  RefreshIndicator(
+                    onRefresh: provider.refreshDocuments,
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: provider.documents().length,
+                      itemBuilder: (context, index) {
+                        return DocumentCard(
+                          document: provider.documents()[index],
+                          onTap: () {
+                            // Manejar el tap en el documento
+                            _showDocumentDetails(context, provider.documents()[index]);
+                          },
+                        );
+                      },
+                    ),
                   ),
-                ),
-                if (provider.isLoading())
-                  const Positioned(
-                    top: 20,
-                    right: 20,
-                    child: CircularProgressIndicator(),
-                  ),
-              ],
-            );
-          },
-        ),
-      )
+                  if (provider.isLoading())
+                    const Positioned(
+                      top: 20,
+                      right: 20,
+                      child: CircularProgressIndicator(),
+                    ),
+                ],
+              );
+            },
+          ),
+        )
     );
   }
 

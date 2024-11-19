@@ -1,8 +1,9 @@
+import 'package:firmonec/data/providers/IProvider.dart';
 import 'package:firmonec/data/providers/document_provider.dart';
 import 'package:flutter/material.dart';
 
 class ErrorCard extends StatelessWidget {
-  final DocumentProvider provider;
+  final ProviderFirmonec provider;
 
   const ErrorCard({super.key, required this.provider});
 
@@ -20,7 +21,7 @@ class ErrorCard extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             // Es mejor agregar una verificación en caso de que error sea null
-            provider.error ?? 'Ha ocurrido un error',
+            provider.error() ?? 'Ha ocurrido un error',
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.red),
           ),

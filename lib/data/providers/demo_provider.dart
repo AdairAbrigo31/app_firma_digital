@@ -1,32 +1,15 @@
 
+import 'dart:convert';
 import 'package:firmonec/data/providers/IProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../domain/entities/IDocument.dart';
-import '../entities/document_en_elaboracion.dart';
-import '../entities/document_reasignado.dart';
-import 'dart:convert';
 
 
-class DocumentProvider extends ChangeNotifier implements ProviderFirmonec{
+class DemoProvider extends ChangeNotifier implements ProviderFirmonec{
   List<IDocument> _documents = [];
   bool _isLoading = false;
   String? _error;
-
-  @override
-  List<IDocument> documents() => _documents;
-  @override
-  bool isLoading() => _isLoading;
-  @override
-  String? error() => _error;
-  @override
-  bool hasDocuments() => _documents.isNotEmpty;
-
-  List<DocumentEnElaboracion> get documentsTypeEnElaboracion =>
-      _documents.whereType<DocumentEnElaboracion>().toList();
-
-  List<DocumentReasignado> get documentsReasignados =>
-      _documents.whereType<DocumentReasignado>().toList();
 
   Future<String> _getPdfAsBase64() async {
     try {
@@ -39,18 +22,21 @@ class DocumentProvider extends ChangeNotifier implements ProviderFirmonec{
   }
 
   @override
+  List<IDocument> documents() => _documents;
+  @override
+  bool  isLoading() => _isLoading;
+  @override
+  String? error() => _error;
+  @override
+  bool  hasDocuments() => _documents.isNotEmpty;
+
+  @override
   Future<void> fetchDocuments() async {
     try {
       _isLoading = true;
       _error = null;
-      notifyListeners();
-
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 1));
       String pdfBase64 = await _getPdfAsBase64();
-
-      // IResponseCargo responseCargo = await http.get("USAR LA URL DESDE APPCONFIG");
-      // Tratar de transformar la responseCargo en una JSON
-      // Revisar los campos de cada documento que traiga la responseCargo
 
       final responseData = [
         {
@@ -61,6 +47,7 @@ class DocumentProvider extends ChangeNotifier implements ProviderFirmonec{
           "elaboradoPor": "Juan Pérez",
           "fechaInicio": "2024-03-14T08:00:00Z",
           "dataInBytes": pdfBase64
+
         },
         {
           "title": "Documento 2",

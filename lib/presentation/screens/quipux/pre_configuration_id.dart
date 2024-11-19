@@ -12,30 +12,28 @@ class PreConfigurationId extends StatefulWidget {
 }
 
 class _PreConfigurationIdState extends State<PreConfigurationId>{
-  String userId = "";
+  String idUser = "";
   final _formKey = GlobalKey<FormState>();
 
   void _onTextChanged(String value){
     setState(() {
-      userId = value;
+      idUser = value;
     });
   }
 
   void _onSubmit() async {
     if(_formKey.currentState?.validate() ?? false){
-      await saveUserId(userId);
-      Navigator.pushNamed(context, "/documents_for_sign");
+      await saveUserId(idUser);
+      if(!mounted){
+        return;
+      }
+      Navigator.pushNamed(context, "/pre_configuration_certificate");
     }
   }
 
-  Future<void> saveUserId(String userId) async {
+  Future<void> saveUserId(String idUser) async {
     final prefers = await SharedPreferences.getInstance();
-    await prefers.setString("userId", userId);
-    
-    if(!mounted){
-      return;
-    }
-    Navigator.pushReplacementNamed(context, "/documents_for_sign");
+    await prefers.setString("idUser", idUser);
   }
 
   @override

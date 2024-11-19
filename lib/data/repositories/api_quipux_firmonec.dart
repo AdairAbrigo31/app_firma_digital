@@ -20,7 +20,8 @@ class ApiQuipuxFirmonec{
 
   static Future<String?> _validateToken ({required Map<String, dynamic> data}) async {
     final response = await http.post(
-      Uri.parse(AppConfig.instance.getUrlServer()),
+      //http://10.0.2.2:8081/servicio/documentos
+      Uri.parse(AppConfig.instance.getUrlServer() /* == http://10.0.2.2:8081/servicio/documentos*/),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(data),
     );

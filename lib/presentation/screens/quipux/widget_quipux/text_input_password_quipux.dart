@@ -78,6 +78,12 @@ class _TextInputPasswordQuipuxState extends State<TextInputPasswordQuipux> {
           ),
           autocorrect: false,  // Desactiva la autocorrección
           enableSuggestions: false,  // Desactiva las sugerencias
+          validator: (value) {
+            if(value == null || value == ""){
+              return "Contraseña invalida";
+            }
+            return null;
+          },
           keyboardType: TextInputType.visiblePassword,  // Teclado específico para contraseñas
         ),
       ),

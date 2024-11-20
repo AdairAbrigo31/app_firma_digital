@@ -1,8 +1,8 @@
 
 import 'package:firmonec/data/providers/demo_provider.dart';
 import 'package:firmonec/data/repositories/api_sign_firmonec.dart';
-import 'package:firmonec/domain/repositories/api_sign.dart';
 import 'package:firmonec/helpers/step1_for_sign_firmonec.dart';
+import 'package:firmonec/presentation/screens/quipux/certificates.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/app_bar_quipux.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/charge_card.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/document_card.dart';
@@ -10,8 +10,6 @@ import 'package:firmonec/presentation/screens/quipux/widget_quipux/empty_card.da
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/error_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../data/entities/document_en_elaboracion.dart';
 import '../../../data/entities/document_reasignado.dart';
 import '../../../domain/entities/IDocument.dart';
@@ -22,13 +20,11 @@ class DemoSign extends StatefulWidget {
   @override
   State<DemoSign> createState() => _DemoSignState();
 
-
 }
 
 class _DemoSignState extends State<DemoSign> {
   final ScrollController _scrollController = ScrollController();
   final ApiSignFirmonec apiSign = ApiSignFirmonec();
-
 
   @override
   void initState() {
@@ -46,13 +42,15 @@ class _DemoSignState extends State<DemoSign> {
 
   Future<void> validateDocument(IDocument document) async {
     String? token = await Step1ForSignFirmonec().getTokenForSign(nameDocument: document.title, dataDocument: document.dataInBase64);
+    List<IDocument> listDocuments = [];
+    listDocuments.add(document);
     if(token == null || token == "El token no ha sido recuperado") {
       return;
     }
     if(!mounted){
       return;
     }
-    Navigator.pushNamed(context, "/certificates");
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Certificates(documents: listDocuments, token: token)));
   }
 
   @override

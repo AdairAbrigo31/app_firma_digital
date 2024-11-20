@@ -1,13 +1,11 @@
 import 'package:firmonec/config/app_config_firmonec.dart';
 import 'package:firmonec/config/config_api.dart';
 import 'package:firmonec/presentation/screens/login.dart';
-import 'package:firmonec/presentation/screens/quipux/certificates.dart';
 import 'package:firmonec/presentation/screens/quipux/demo_sign.dart';
 import 'package:firmonec/presentation/screens/quipux/documents_for_sign.dart';
 import 'package:firmonec/presentation/screens/quipux/pre_configuration_certificates.dart';
 import 'package:firmonec/presentation/screens/quipux/pre_configuration_id.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -71,7 +69,6 @@ class MyApp extends StatelessWidget {
           "/pre_configuration_certificate": (context) =>const PreConfigurationCertificate(),
           "/documents_for_sign": (context) => const DocumentsForSign(),
           "/demo_sign": (context) => const DemoSign(),
-          "/certificates": (context) => const Certificates(),
         },
     );
   }

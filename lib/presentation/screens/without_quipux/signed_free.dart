@@ -17,6 +17,8 @@ import 'package:firmonec/presentation/widgets_app/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
+import '../../../helpers/step1_for_sign_firmonec.dart';
+
 class SignedFree extends StatefulWidget {
   final ApiQuipux apiQuipux = new ApiQuipuxEspol();
   final ApiSign apiSign = new ApiSignFirmonec();

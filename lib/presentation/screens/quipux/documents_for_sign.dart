@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:firmonec/data/providers/document_provider.dart';
-import 'package:firmonec/presentation/screens/quipux/widget_quipux/app_bar_quipux.dart';
+import 'package:firmonec/presentation/screens/quipux/widget_quipux/app_bar_firmonec.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/charge_card.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/document_card.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/empty_card.dart';
@@ -42,7 +42,7 @@ class _DocumentsForSignState extends State<DocumentsForSign> {
       ChangeNotifierProvider(create: (_) => DocumentProvider()),
       ],
       child: Scaffold(
-        appBar: AppBarQuipux(),
+        appBar: AppBarFirmonec(),
         body: Consumer<DocumentProvider>(
           builder: (context, provider, child) {
             if (provider.isLoading() && !provider.hasDocuments()) {

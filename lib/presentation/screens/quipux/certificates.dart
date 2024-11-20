@@ -1,10 +1,11 @@
 import 'package:firmonec/domain/entities/IDocument.dart';
+import 'package:firmonec/presentation/screens/quipux/widget_quipux/app_bar_firmonec.dart';
 import 'package:flutter/material.dart';
 
 class Certificates extends StatefulWidget {
   final List<IDocument> documents;
-  final String token;
-  const Certificates({super.key, required this.documents, required this.token});
+  final List<String> tokens;
+  const Certificates({super.key, required this.documents, required this.tokens});
 
   @override
   State<Certificates> createState() => _CertificateState();
@@ -16,7 +17,19 @@ class _CertificateState extends State<Certificates> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return const Scaffold(
-      body: Text("Certificados"),
+      appBar: AppBarFirmonec(),
+      body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                children: [
+                  Text("Seleccione el certificado que desea usar")
+                ],
+              ),
+            ),
+          )
+      ),
     );
   }
 

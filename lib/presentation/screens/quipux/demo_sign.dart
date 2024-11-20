@@ -3,7 +3,7 @@ import 'package:firmonec/data/providers/demo_provider.dart';
 import 'package:firmonec/data/repositories/api_sign_firmonec.dart';
 import 'package:firmonec/helpers/step1_for_sign_firmonec.dart';
 import 'package:firmonec/presentation/screens/quipux/certificates.dart';
-import 'package:firmonec/presentation/screens/quipux/widget_quipux/app_bar_quipux.dart';
+import 'package:firmonec/presentation/screens/quipux/widget_quipux/app_bar_firmonec.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/charge_card.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/document_card.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/empty_card.dart';
@@ -43,14 +43,22 @@ class _DemoSignState extends State<DemoSign> {
   Future<void> validateDocument(IDocument document) async {
     String? token = await Step1ForSignFirmonec().getTokenForSign(nameDocument: document.title, dataDocument: document.dataInBase64);
     List<IDocument> listDocuments = [];
-    listDocuments.add(document);
+    List<String> listTokens = [];
     if(token == null || token == "El token no ha sido recuperado") {
       return;
     }
+    listDocuments.add(document);
+    listTokens.add(token);
     if(!mounted){
       return;
     }
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Certificates(documents: listDocuments, token: token)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Certificates(
+            documents: listDocuments,
+            tokens: listTokens)
+        )
+    );
   }
 
   @override
@@ -60,7 +68,7 @@ class _DemoSignState extends State<DemoSign> {
           ChangeNotifierProvider(create: (_) => DemoProvider()),
         ],
         child: Scaffold(
-          appBar: const AppBarQuipux(),
+          appBar: const AppBarFirmonec(),
           body: Consumer<DemoProvider>(
             builder: (context, provider, child) {
               if (provider.isLoading() && !provider.hasDocuments()) {

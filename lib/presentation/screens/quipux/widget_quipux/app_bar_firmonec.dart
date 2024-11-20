@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class AppBarQuipux extends StatelessWidget implements PreferredSizeWidget {
+class AppBarFirmonec extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final VoidCallback? onBackPressed;
   final Color? backgroundColor;
   final Color? textColor;
 
-  const AppBarQuipux({
+  const AppBarFirmonec({
     Key? key,
     this.title,
     this.onBackPressed,

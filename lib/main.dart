@@ -1,7 +1,7 @@
 import 'package:firmonec/config/app_config_firmonec.dart';
 import 'package:firmonec/config/config_api.dart';
 import 'package:firmonec/presentation/screens/login.dart';
-import 'package:firmonec/presentation/screens/quipux/Certificates.dart';
+import 'package:firmonec/presentation/screens/quipux/certificates.dart';
 import 'package:firmonec/presentation/screens/quipux/demo_sign.dart';
 import 'package:firmonec/presentation/screens/quipux/documents_for_sign.dart';
 import 'package:firmonec/presentation/screens/quipux/pre_configuration_certificates.dart';

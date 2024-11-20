@@ -1,20 +1,20 @@
-class AppConfig{
-  static AppConfig? _instance;
+class AppConfigFirmonec{
+  static AppConfigFirmonec? _instance;
 
-  static const String urlApiSign = "https://34.56.229.106:8080/";
-  static const String endpointApiSign = "servicio";
+  static const String urlApiSign = "https://34.56.229.106:8081";
+  static const String endpointApiSign = "servicio/documentos";
 
   static const String urlApiQuipux = "";
   static const String endpointApiQuipux = "";
 
-  AppConfig._internal();
+  AppConfigFirmonec._internal();
 
-  factory AppConfig(){
-    _instance ??= AppConfig._internal();
+  factory AppConfigFirmonec(){
+    _instance ??= AppConfigFirmonec._internal();
     return _instance!;
   }
 
-  static AppConfig get instance {
+  static AppConfigFirmonec get instance {
     if (_instance == null) {
       throw StateError('AppConfig debe ser inicializado primero');
     }

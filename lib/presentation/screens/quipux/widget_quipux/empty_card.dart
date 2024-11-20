@@ -1,4 +1,4 @@
-import 'package:firmonec/data/providers/IProvider.dart';
+import 'package:firmonec/domain/repositories/IProvider.dart';
 import 'package:firmonec/data/providers/document_provider.dart';
 import 'package:flutter/material.dart';
 

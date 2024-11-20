@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/IDocument.dart';
+import '../entities/IDocument.dart';
 
 abstract class ProviderFirmonec{
   List<IDocument> documents();

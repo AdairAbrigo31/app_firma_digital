@@ -27,17 +27,22 @@ class _DemoSignState extends State<DemoSign> {
 
 
   @override
-  Future<void> initState() async {
+  void initState() {
     super.initState();
     // TODO: implement initState
-    final prefs = await SharedPreferences.getInstance();
-    String? id = prefs.getString("idUser");
+    //final prefs = await SharedPreferences.getInstance();
+    //String? id = prefs.getString("idUser");
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void validateDocuments() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? id = prefs.getString("idUser");
   }
 
   @override
@@ -47,7 +52,7 @@ class _DemoSignState extends State<DemoSign> {
           ChangeNotifierProvider(create: (_) => DemoProvider()),
         ],
         child: Scaffold(
-          appBar: AppBarQuipux(),
+          appBar: const AppBarQuipux(),
           body: Consumer<DemoProvider>(
             builder: (context, provider, child) {
               if (provider.isLoading() && !provider.hasDocuments()) {
@@ -143,7 +148,7 @@ class _DemoSignState extends State<DemoSign> {
                 const SizedBox(height: 16),
                 // Aquí puedes agregar más detalles según el tipo de documento
                 if (document is DocumentEnElaboracion) ...[
-                  _buildDetailRow('Elaborado por:', document.elaboradoPor),
+                  _buildDetailRow('Elaborado por demoSign:', document.elaboradoPor),
                   _buildDetailRow('Fecha de inicio:', _formatDate(document.fechaInicio)),
                 ],
                 if (document is DocumentReasignado) ...[

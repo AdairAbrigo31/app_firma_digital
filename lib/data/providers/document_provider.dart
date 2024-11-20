@@ -1,5 +1,5 @@
 
-import 'package:firmonec/data/providers/IProvider.dart';
+import 'package:firmonec/domain/repositories/IProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../domain/entities/IDocument.dart';

@@ -1,50 +1,16 @@
 import 'dart:convert';
+import 'package:firmonec/config/app_config_firmonec.dart';
 import 'package:http/http.dart' as http;
 import 'package:firmonec/domain/repositories/api_sign.dart';
-import '../../config/config_api.dart';
 import 'dart:typed_data';
+import '../../helpers/forGetToken.dart';
 
 class ApiSignFirmonec implements ApiSign {
-
-  Map<String, dynamic> _createDataToJson({required String id, required String nameDocument, required String dataDocument}){
-    final data = {
-      'cedula': id,
-      'sistema': 'quipux',
-      'documentos': [
-        {
-          'nombre': nameDocument,
-          'documento': dataDocument,
-        },
-      ],
-    };
-    return data;
-  }
-
-  Future<String?> _validateToken({required Map<String, dynamic> data}) async {
-    try {
-      final response = await http.post(
-        Uri.parse(AppConfig.instance.getUrlFirmonec()),
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-KEY': '4398df874a21f3633e067a8e3e1f9dcbc244271eb114549c66f374793a9a2d13'
-        },
-        body: json.encode(data),
-      );
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final token = response.body;
-        return token;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      return null;
-    }
-  }
 
   @override
   Future<Map<int, Uint8List>> getDocumentValidated(String token) async {
     final response = await http.get(
-      Uri.parse('${AppConfig.instance.getUrlFirmonec()}/$token'),
+      Uri.parse('${AppConfigFirmonec.instance.getUrlForSign()}/$token'),
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 200) {
@@ -88,7 +54,7 @@ class ApiSignFirmonec implements ApiSign {
 
       // Enviar la solicitud PUT al servidor
       final response = await http.put(
-        Uri.parse('${AppConfig.instance.getUrlFirmonec()}/$token'),
+        Uri.parse('${AppConfigFirmonec.instance.getUrlForSign()}/$token'),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {
           'json': jsonDocumentos,
@@ -117,7 +83,24 @@ class ApiSignFirmonec implements ApiSign {
 
   @override
   Future<String?> getTokenForSign({ required String idUser,  required String nameDocument,  required String dataDocument}) async {
-    Map<String, dynamic> data = _createDataToJson(id: idUser, nameDocument: nameDocument, dataDocument: dataDocument);
-    return await _validateToken(data: data);
+    Map<String, dynamic> data = ForGetToken.createDataToJson(id: idUser, nameDocument: nameDocument, dataDocument: dataDocument);
+    try {
+      final response = await http.post(
+        Uri.parse(AppConfigFirmonec.instance.getUrlForSign()),
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': '4398df874a21f3633e067a8e3e1f9dcbc244271eb114549c66f374793a9a2d13'
+        },
+        body: json.encode(data),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final token = response.body;
+        return token;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
   }
 }

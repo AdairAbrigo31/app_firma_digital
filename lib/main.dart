@@ -1,24 +1,27 @@
+import 'package:firmonec/config/app_config_firmonec.dart';
 import 'package:firmonec/config/config_api.dart';
+import 'package:firmonec/data/providers/demo_provider.dart';
 import 'package:firmonec/data/repositories/api_quipux_espol.dart';
 import 'package:firmonec/data/repositories/api_sign_firmonec.dart';
 import 'package:firmonec/domain/repositories/api_quipux.dart';
 import 'package:firmonec/domain/repositories/api_sign.dart';
 import 'package:firmonec/presentation/screens/login.dart';
+import 'package:firmonec/presentation/screens/quipux/demo_sign.dart';
 import 'package:firmonec/presentation/screens/quipux/documents_for_sign.dart';
 import 'package:firmonec/presentation/screens/quipux/pre_configuration_certificates.dart';
 import 'package:firmonec/presentation/screens/quipux/pre_configuration_id.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
 void main() {
   AppConfig(typeConfig: TypeConfig.development, typeApiFirma: TypeApiFirma.firmonec);
+  AppConfigFirmonec();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final ApiQuipux apiQuipux = new ApiQuipuxEspol();
-  final ApiSign apiSign = new ApiSignFirmonec();
   MyApp({super.key});
 
   Future<Widget> _selectView() async {
@@ -32,7 +35,7 @@ class MyApp extends StatelessWidget {
     if(prefs.getStringList("certificates") == null){
       return const PreConfigurationCertificate();
     }
-      return const DocumentsForSign();
+      return const DemoSign();
 
   }
 
@@ -63,14 +66,15 @@ class MyApp extends StatelessWidget {
                   ),
                 );
               }
-              return snapshot.data ?? const DocumentsForSign();
+              return snapshot.data!;
             }
         ),
         routes: {
           "/login": (context) => const Login(),
           "/pre_configuration_id": (context) => const PreConfigurationId(),
           "/pre_configuration_certificate": (context) =>const PreConfigurationCertificate(),
-          "/documents_for_sign": (context) => const DocumentsForSign()
+          "/documents_for_sign": (context) => const DocumentsForSign(),
+          "/demo_sign": (context) => const DemoSign(),
         },
     );
   }

@@ -93,13 +93,10 @@ class ApiSignFirmonec implements ApiSign {
         },
         body: json.encode(data),
       );
-      print('response: ${response.body}');
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print("Trajo el token");
         return json.decode(response.body)["token"];
       } else {
-        print("No Trajo el token");
-        return null;
+        return "El token no ha sido recuperado";
       }
     } catch (e) {
       print("Error $e");

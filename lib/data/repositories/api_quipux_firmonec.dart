@@ -34,7 +34,7 @@ class ApiQuipuxFirmonec{
   }
 
   static Future<String?> getToken({required String id, required String nameDocument, required String dataDocument}) async {
-    Map<String, dynamic> data = await _createDataToJson(id: id, nameDocument: nameDocument, dataDocument: dataDocument);
+    Map<String, dynamic> data = _createDataToJson(id: id, nameDocument: nameDocument, dataDocument: dataDocument);
     return await _validateToken(data: data);
   }
 

@@ -1,5 +1,7 @@
 
 import 'package:firmonec/data/providers/demo_provider.dart';
+import 'package:firmonec/data/repositories/api_sign_firmonec.dart';
+import 'package:firmonec/domain/repositories/api_sign.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/app_bar_quipux.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/charge_card.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/document_card.dart';
@@ -24,6 +26,7 @@ class DemoSign extends StatefulWidget {
 
 class _DemoSignState extends State<DemoSign> {
   final ScrollController _scrollController = ScrollController();
+  final ApiSignFirmonec apiSign = ApiSignFirmonec();
 
 
   @override
@@ -40,9 +43,20 @@ class _DemoSignState extends State<DemoSign> {
     super.dispose();
   }
 
-  void validateDocuments() async {
+  Future<void> validateDocument(IDocument document) async {
     final prefs = await SharedPreferences.getInstance();
-    String? id = prefs.getString("idUser");
+    String? idUser = prefs.getString("idUser");
+    String? token = await apiSign.getTokenForSign(
+        idUser: idUser!,
+        nameDocument: document.title,
+        dataDocument: document.dataInBase64
+    );
+    if(token != null){
+      //Cargar certificados
+    } else {
+      return;
+    }
+
   }
 
   @override
@@ -156,6 +170,11 @@ class _DemoSignState extends State<DemoSign> {
                   _buildDetailRow('Motivo:', document.motivoReasignacion),
                   _buildDetailRow('Fecha de reasignación:', _formatDate(document.fechaReasignacion)),
                 ],
+                const SizedBox(height: 16),
+                ElevatedButton(
+                    onPressed:() => validateDocument(document),
+                    child: const Text("Firmar")
+                )
               ],
             ),
           ),

@@ -9,7 +9,7 @@ class DocumentReasignado extends IDocument {
     required super.title,
     required super.subject,
     required super.date,
-    required super.dataInBytes,
+    required super.dataInBase64,
     required this.reasignadoPor,
     required this.motivoReasignacion,
     required this.fechaReasignacion
@@ -25,7 +25,7 @@ class DocumentReasignado extends IDocument {
       reasignadoPor: json['reasignadoPor'] as String,
       motivoReasignacion: json['motivoReasignacion'] as String,
       fechaReasignacion: DateTime.parse(json['fechaReasignacion'] as String),
-      dataInBytes: json['dataInBytes'] as String,
+      dataInBase64: json['dataInBase64'] as String,
     );
   }
 }

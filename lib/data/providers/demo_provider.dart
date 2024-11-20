@@ -24,11 +24,11 @@ class DemoProvider extends ChangeNotifier implements ProviderFirmonec{
   @override
   List<IDocument> documents() => _documents;
   @override
-  bool  isLoading() => _isLoading;
+  bool isLoading() => _isLoading;
   @override
   String? error() => _error;
   @override
-  bool  hasDocuments() => _documents.isNotEmpty;
+  bool hasDocuments() => _documents.isNotEmpty;
 
   @override
   Future<void> fetchDocuments() async {
@@ -46,7 +46,7 @@ class DemoProvider extends ChangeNotifier implements ProviderFirmonec{
           "type": "enElaboracion",
           "elaboradoPor": "Juan Pérez",
           "fechaInicio": "2024-03-14T08:00:00Z",
-          "dataInBytes": pdfBase64
+          "dataInBase64": pdfBase64
 
         },
         {
@@ -57,7 +57,7 @@ class DemoProvider extends ChangeNotifier implements ProviderFirmonec{
           "reasignadoPor": "María López",
           "motivoReasignacion": "Cambio de departamento",
           "fechaReasignacion": "2024-03-15T09:00:00Z",
-          "dataInBytes": pdfBase64
+          "dataInBase64": pdfBase64
         },
       ];
 

@@ -7,14 +7,14 @@ abstract class IDocument {
   final String subject;
   final DateTime date;
   final String type;
-  final String dataInBytes;
+  final String dataInBase64;
 
   IDocument({
     required this.title,
     required this.subject,
     required this.date,
     required this.type,
-    required this.dataInBytes
+    required this.dataInBase64
   });
 
   factory IDocument.fromJson(Map<String, dynamic> json) {

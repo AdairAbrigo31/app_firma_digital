@@ -86,20 +86,23 @@ class ApiSignFirmonec implements ApiSign {
     Map<String, dynamic> data = ForGetToken.createDataToJson(id: idUser, nameDocument: nameDocument, dataDocument: dataDocument);
     try {
       final response = await http.post(
-        Uri.parse(AppConfigFirmonec.instance.getUrlForSign()),
+        Uri.parse(AppConfigFirmonec.instance.getUrlForSignLocal()),
         headers: {
           'Content-Type': 'application/json',
-          'X-API-KEY': '4398df874a21f3633e067a8e3e1f9dcbc244271eb114549c66f374793a9a2d13'
+          'X-API-KEY': AppConfigFirmonec.instance.getTokenApiSignLocal()
         },
         body: json.encode(data),
       );
+      print('response: ${response.body}');
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final token = response.body;
-        return token;
+        print("Trajo el token");
+        return json.decode(response.body)["token"];
       } else {
+        print("No Trajo el token");
         return null;
       }
     } catch (e) {
+      print("Error $e");
       return null;
     }
   }

@@ -9,7 +9,7 @@ class DocumentEnElaboracion extends IDocument {
     required super.title,
     required super.subject,
     required super.date,
-    required super.dataInBytes,
+    required super.dataInBase64,
     required this.elaboradoPor,
     required this.fechaInicio,
   }) : super(
@@ -23,7 +23,7 @@ class DocumentEnElaboracion extends IDocument {
       date: DateTime.parse(json['date'] as String),
       elaboradoPor: json['elaboradoPor'] as String,
       fechaInicio: DateTime.parse(json['fechaInicio'] as String),
-      dataInBytes: json['dataInBytes'] as String,
+      dataInBase64: json['dataInBase64'] as String,
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:typed_data';
 import 'package:firmonec/config/config_api.dart';
 import 'package:http/http.dart' as http;

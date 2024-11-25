@@ -1,7 +1,7 @@
 
 import 'package:firmonec/data/providers/demo_provider.dart';
 import 'package:firmonec/data/repositories/api_sign_firmonec.dart';
-import 'package:firmonec/helpers/step1_for_sign_firmonec.dart';
+import 'package:firmonec/domain/repositories/api_sign.dart';
 import 'package:firmonec/presentation/screens/quipux/certificates.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/app_bar_firmonec.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/charge_card.dart';
@@ -15,7 +15,8 @@ import '../../../data/entities/document_reasignado.dart';
 import '../../../domain/entities/IDocument.dart';
 
 class DemoSign extends StatefulWidget {
-  const DemoSign({super.key});
+  final ApiSign apiSign = ApiSignFirmonec();
+  DemoSign({super.key});
 
   @override
   State<DemoSign> createState() => _DemoSignState();
@@ -40,8 +41,8 @@ class _DemoSignState extends State<DemoSign> {
     super.dispose();
   }
 
-  Future<void> validateDocument(IDocument document) async {
-    String? token = await Step1ForSignFirmonec().getTokenForSign(nameDocument: document.title, dataDocument: document.dataInBase64);
+  Future<void> _validateDocument(IDocument document) async {
+    String? token = await apiSign.getTokenForSign(nameDocument: document.title, dataDocument: document.dataInBase64);
     List<IDocument> listDocuments = [];
     List<String> listTokens = [];
     if(token == null || token == "El token no ha sido recuperado") {
@@ -174,7 +175,7 @@ class _DemoSignState extends State<DemoSign> {
                 ],
                 const SizedBox(height: 16),
                 ElevatedButton(
-                    onPressed:() => validateDocument(document),
+                    onPressed:() => _validateDocument(document),
                     child: const Text("Firmar")
                 )
               ],

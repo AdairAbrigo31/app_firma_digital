@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     if(prefs.getStringList("certificates") == null){
       return const PreConfigurationCertificate();
     }
-      return const DemoSign();
+      return DemoSign();
 
   }
 
@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
           "/pre_configuration_id": (context) => const PreConfigurationId(),
           "/pre_configuration_certificate": (context) =>const PreConfigurationCertificate(),
           "/documents_for_sign": (context) => const DocumentsForSign(),
-          "/demo_sign": (context) => const DemoSign(),
+          "/demo_sign": (context) => DemoSign(),
         },
     );
   }

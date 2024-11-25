@@ -9,7 +9,7 @@ import '../../helpers/getTokenForSignHelper.dart';
 class ApiSignFirmonec implements ApiSign {
 
   @override
-  Future<Map<int, Uint8List>> getDocumentValidated(String token) async {
+  Future<Map<int, Uint8List>> getDocumentValidated({required String token}) async {
     final response = await http.get(
       Uri.parse('${AppConfigFirmonec.instance.getUrlForSignLocal()}/$token'),
       headers: {'Content-Type': 'application/json'},
@@ -31,7 +31,7 @@ class ApiSignFirmonec implements ApiSign {
   }
 
   @override
-  Future<dynamic> updateDocumentSigned(String token, Map<int, String> signedDocuments, String idUser) async {
+  Future<dynamic> updateDocumentSigned({required String token, required Map<int, String> signedDocuments, required String idUser}) async {
     try {
       List<Map<String, dynamic>> listDocuments = UpdateDocumentSignedHelper.createListWithFormat(signedDocuments: signedDocuments);
       String jsonDocuments = UpdateDocumentSignedHelper.createObjectJson(idUser: idUser, listDocuments: listDocuments);

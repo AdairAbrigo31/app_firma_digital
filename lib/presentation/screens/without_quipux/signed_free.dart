@@ -4,14 +4,11 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:firmonec/data/repositories/api_quipux_espol.dart';
-import 'package:firmonec/data/repositories/api_quipux_firmonec.dart';
 import 'package:firmonec/data/repositories/api_sign_firmonec.dart';
 import 'package:firmonec/domain/repositories/api_quipux.dart';
 import 'package:firmonec/domain/repositories/api_sign.dart';
-import 'package:firmonec/helpers/get_document.dart';
 import 'package:firmonec/helpers/pickfile_custom.dart';
 import 'package:firmonec/helpers/sign_document.dart';
-import 'package:firmonec/helpers/update_document.dart';
 import 'package:firmonec/presentation/screens/without_quipux/dowload_share_screen.dart';
 import 'package:firmonec/presentation/widgets_app/app_bar.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +16,6 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class SignedFree extends StatefulWidget {
   final ApiQuipux apiQuipux = new ApiQuipuxEspol();
-  final ApiSign apiSign = new ApiSignFirmonec();
   SignedFree({super.key});
 
   @override
@@ -28,6 +24,8 @@ class SignedFree extends StatefulWidget {
 }
 
 class SignedFreeState extends State<SignedFree>{
+  final ApiSign apiSign = ApiSignFirmonec();
+
   final _cedulaController = TextEditingController();
   String? _documentData;
   String? _documentName;
@@ -57,10 +55,7 @@ class SignedFreeState extends State<SignedFree>{
   Future<void> validatedDocument() async {
     if (_cedulaController.text.isNotEmpty && _documentData != null &&
         _documentName != null) {
-      String? token = await ApiQuipuxFirmonec.getToken(id: _cedulaController.text,
-          nameDocument: _documentName!,
-          dataDocument: _documentData!
-      );
+      String? token = await apiSign.getTokenForSign(nameDocument: _documentName!, dataDocument: _documentData!);
       if (token != null) {
         _tokenPassDocument = token;
         setState(() {
@@ -128,10 +123,10 @@ class SignedFreeState extends State<SignedFree>{
       },
     );
 
-    Map<int, Uint8List> document = await getDocuments(_tokenPassDocument!);
+    Map<int, Uint8List> document = await apiSign.getDocumentValidated(token: _tokenPassDocument!);
     Map<int, String> signedDocuments = await signDocument(document, certifiedFile!, _password!);
     if(signedDocuments.isNotEmpty){
-      await updateDocument(_tokenPassDocument!, signedDocuments, _cedulaController.text);
+      await apiSign.updateDocumentSigned(token:  _tokenPassDocument!,signedDocuments:  signedDocuments,idUser:  _cedulaController.text);
     }
     Navigator.pop(context);
     Navigator.push(context, MaterialPageRoute(builder: (context) => DowloadShareScreen(signedDocuments: signedDocuments)));

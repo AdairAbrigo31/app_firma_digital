@@ -15,8 +15,7 @@ import '../../../data/entities/document_reasignado.dart';
 import '../../../domain/entities/IDocument.dart';
 
 class DemoSign extends StatefulWidget {
-  final ApiSign apiSign = ApiSignFirmonec();
-  DemoSign({super.key});
+  const DemoSign({super.key});
 
   @override
   State<DemoSign> createState() => _DemoSignState();

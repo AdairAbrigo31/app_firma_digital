@@ -14,8 +14,9 @@ class Certificates extends StatefulWidget {
 
 class _CertificatesState extends State<Certificates> {
   List<String> certificates = [];
-  Set<int> selectedDocuments = {};
   bool isLoading = true;
+  final _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -23,11 +24,16 @@ class _CertificatesState extends State<Certificates> {
     _loadCertificates();
   }
 
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   Future<void> _loadCertificates() async {
     final prefs = await SharedPreferences.getInstance();
     final savedCertificates = prefs.getStringList("certificates") ?? [];
 
-    // Validar que los certificados existan
     final validCertificates = <String>[];
     for (final path in savedCertificates) {
       if (await File(path).exists()) {
@@ -41,26 +47,72 @@ class _CertificatesState extends State<Certificates> {
     });
   }
 
-  void _toggleDocumentSelection(int index) {
-    setState(() {
-      if (selectedDocuments.contains(index)) {
-        selectedDocuments.remove(index);
-      } else {
-        selectedDocuments.add(index);
-      }
-    });
+  Future<void> _showPasswordDialog(String certificatePath) async {
+    _passwordController.clear(); // Limpiar password anterior
+
+    final result = await showDialog<Map<String, String>>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('Ingrese la contraseña'),
+        content: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Certificado: ${certificatePath.split('/').last}',
+                style: const TextStyle(fontSize: 14),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: 'Contraseña',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese la contraseña';
+                  }
+                  return null;
+                },
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                Navigator.of(context).pop({
+                  'path': certificatePath,
+                  'password': _passwordController.text,
+                });
+              }
+            },
+            child: const Text('Aceptar'),
+          ),
+        ],
+      ),
+    );
+
+    if (result != null) {
+      // Aquí puedes implementar la lógica de firma
+      // result contiene 'path' y 'password'
+      processCertificate(result['path']!, result['password']!);
+    }
   }
 
-  void _onSignSelected() {
-    if (selectedDocuments.isEmpty) return;
-
-    // Aquí iría la lógica para procesar los documentos seleccionados
-    final selectedPaths = selectedDocuments
-        .map((index) => certificates[index])
-        .toList();
-
-    // TODO: Implementar la acción de firma
-    print('Documentos seleccionados: $selectedPaths');
+  void processCertificate(String path, String password) {
+    // TODO: Implementar la lógica de firma
+    print('Procesando certificado: $path con contraseña: $password');
   }
 
   @override
@@ -75,7 +127,7 @@ class _CertificatesState extends State<Certificates> {
               children: [
                 const SizedBox(height: 40),
                 Icon(
-                  Icons.description,
+                  Icons.security,
                   size: 80,
                   color: Theme.of(context).primaryColor,
                 ),
@@ -88,7 +140,7 @@ class _CertificatesState extends State<Certificates> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  "Seleccione los certificados que desea procesar",
+                  "Seleccione un certificado para iniciar el proceso de firma",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Colors.grey[600],
@@ -123,39 +175,29 @@ class _CertificatesState extends State<Certificates> {
                     itemCount: certificates.length,
                     itemBuilder: (context, index) {
                       final fileName = certificates[index].split('/').last;
-                      final isSelected = selectedDocuments.contains(index);
 
                       return Card(
-                        elevation: isSelected ? 2 : 1,
                         margin: const EdgeInsets.symmetric(vertical: 4),
-                        color: isSelected
-                            ? Theme.of(context).primaryColor.withOpacity(0.1)
-                            : null,
                         child: ListTile(
-                          leading: Icon(
-                            Icons.file_present,
-                            color: isSelected
-                                ? Theme.of(context).primaryColor
-                                : Colors.grey,
+                          leading: const Icon(
+                            Icons.key,
+                            color: Colors.grey,
                           ),
                           title: Text(
                             fileName,
-                            style: TextStyle(
-                              fontWeight: isSelected
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          trailing: isSelected
-                              ? Icon(
-                            Icons.check_circle,
-                            color: Theme.of(context).primaryColor,
-                          )
-                              : const Icon(
-                            Icons.radio_button_unchecked,
-                            color: Colors.grey,
+                          subtitle: Text(
+                            'Toque para usar este certificado',
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 12,
+                            ),
                           ),
-                          onTap: () => _toggleDocumentSelection(index),
+                          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                          onTap: () => _showPasswordDialog(certificates[index]),
                         ),
                       );
                     },
@@ -164,32 +206,9 @@ class _CertificatesState extends State<Certificates> {
                 Container(
                   width: double.infinity,
                   constraints: const BoxConstraints(maxWidth: 400),
-                  child: ElevatedButton(
-                    onPressed: selectedDocuments.isEmpty ? null : _onSignSelected,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                    ),
-                    child: Text(
-                      selectedDocuments.isEmpty
-                          ? "Seleccione al menos un certificado"
-                          : "Procesar ${selectedDocuments.length} certificado${selectedDocuments.length == 1 ? '' : 's'}",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  width: double.infinity,
-                  constraints: const BoxConstraints(maxWidth: 400),
                   child: OutlinedButton(
                     onPressed: () {
-                      Navigator.pushReplacementNamed(
-                          context,
-                          "/pre_configuration"
-                      );
+                      Navigator.pop(context);
                     },
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),

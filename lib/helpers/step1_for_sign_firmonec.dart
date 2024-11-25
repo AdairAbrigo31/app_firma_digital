@@ -29,10 +29,10 @@ class Step1ForSignFirmonec {
     Map<String, dynamic> data = _createDataToJson(id: idUser, nameDocument: nameDocument, dataDocument: dataDocument);
     try {
       final response = await http.post(
-        Uri.parse(AppConfigFirmonec.instance.getUrlForSign()),
+        Uri.parse(AppConfigFirmonec.instance.getUrlForSignLocal()),
         headers: {
           'Content-Type': 'application/json',
-          'X-API-KEY': AppConfigFirmonec.instance.getTokenApiSign()
+          'X-API-KEY': AppConfigFirmonec.instance.getTokenApiSignLocal()
         },
         body: json.encode(data),
       );

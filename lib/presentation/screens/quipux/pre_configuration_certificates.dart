@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart' as path;
 
 class PreConfigurationCertificate extends StatefulWidget {
   const PreConfigurationCertificate({super.key});
@@ -20,11 +24,31 @@ class _PreConfigurationCertificateState extends State<PreConfigurationCertificat
     _loadCertificates();
   }
 
+  Future<bool> _validateCertificatePath(String path) async {
+    final file = File(path);
+    return await file.exists();
+  }
+
   Future<void> _loadCertificates() async {
     final prefs = await SharedPreferences.getInstance();
+    final savedCertificates = prefs.getStringList("certificates") ?? [];
+
+    // Filtrar solo los certificados que aún existen
+    final validCertificates = <String>[];
+    for (final path in savedCertificates) {
+      if (await _validateCertificatePath(path)) {
+        validCertificates.add(path);
+      }
+    }
+
     setState(() {
-      selectedCertificates = prefs.getStringList("certificates") ?? [];
+      selectedCertificates = validCertificates;
     });
+
+    // Actualizar SharedPreferences si algunos certificados ya no existen
+    if (validCertificates.length != savedCertificates.length) {
+      await prefs.setStringList("certificates", validCertificates);
+    }
   }
 
   Future<void> _pickCertificate() async {
@@ -39,12 +63,27 @@ class _PreConfigurationCertificateState extends State<PreConfigurationCertificat
     }
   }
 
-  Future<void> _saveCertificate(String path) async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      selectedCertificates.add(path);
-    });
-    await prefs.setStringList("certificates", selectedCertificates);
+  Future<void> _saveCertificate(String originalPath) async {
+    try {
+      final appDir = await getApplicationDocumentsDirectory();
+      final fileName = path.basename(originalPath);
+      final localPath = path.join(appDir.path, 'certificates', fileName);
+      final certificateDir = Directory(path.dirname(localPath));
+      if(!await certificateDir.exists()){
+        await certificateDir.create(recursive: true);
+      }
+      final File originalFile = File(originalPath);
+      await originalFile.copy(localPath);
+      final prefs = await SharedPreferences.getInstance();
+      setState(() {
+        selectedCertificates.add(localPath);
+      });
+      await prefs.setStringList("certificates", selectedCertificates);
+    } catch (e) {
+      // Manejar el error apropiadamente
+      print('Error al guardar el certificado: $e');
+      // Aquí deberías mostrar un mensaje al usuario
+    }
   }
 
   void _removeCertificate(int index) async {

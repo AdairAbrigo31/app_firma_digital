@@ -24,7 +24,7 @@ class DemoSign extends StatefulWidget {
 
 class _DemoSignState extends State<DemoSign> {
   final ScrollController _scrollController = ScrollController();
-  final ApiSignFirmonec apiSign = ApiSignFirmonec();
+  final ApiSign apiSign = ApiSignFirmonec();
 
   @override
   void initState() {

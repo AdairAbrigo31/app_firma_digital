@@ -1,8 +1,8 @@
 class ConfigPersistenceData {
   static ConfigPersistenceData? _instance;
 
-  static const String nameForPersistToIdUser = "idUser";
-  static const String nameForPersistToCertificates = "certificates";
+  static const String _nameForPersistToIdUser = "idUser";
+  static const String _nameForPersistToCertificates = "certificates";
 
   ConfigPersistenceData._internal();
 
@@ -19,10 +19,10 @@ class ConfigPersistenceData {
   }
 
   String getNameForPersistToIdUser() {
-    return nameForPersistToIdUser;
+    return _nameForPersistToIdUser;
   }
 
-  String getnameForPersistToCertificates() {
-    return nameForPersistToCertificates;
+  String getNameForPersistToCertificates() {
+    return _nameForPersistToCertificates;
   }
 }

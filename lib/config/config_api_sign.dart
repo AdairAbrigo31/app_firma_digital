@@ -1,5 +1,5 @@
-class AppConfigFirmonec{
-  static AppConfigFirmonec? _instance;
+class ConfigApiSign{
+  static ConfigApiSign? _instance;
 
   static const String urlApiSign = "http://34.56.229.106:8080";
   static const String endpointApiSign = "servicio/documentos";
@@ -9,16 +9,16 @@ class AppConfigFirmonec{
   static const String endpointApiSignLocal = "servicio/documentos";
   static const String tokenApiSignLocal = "4398df874a21f3633e067a8e3e1f9dcbc244271eb114549c66f374793a9a2d13";
 
-  AppConfigFirmonec._internal();
+  ConfigApiSign._internal();
 
-  factory AppConfigFirmonec(){
-    _instance ??= AppConfigFirmonec._internal();
+  factory ConfigApiSign(){
+    _instance ??= ConfigApiSign._internal();
     return _instance!;
   }
 
-  static AppConfigFirmonec get instance {
+  static ConfigApiSign get instance {
     if (_instance == null) {
-      throw StateError('AppConfig debe ser inicializado primero');
+      throw StateError('ConfigApiSign debe ser inicializado primero');
     }
     return _instance!;
   }

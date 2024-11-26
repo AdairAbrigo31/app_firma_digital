@@ -1,5 +1,5 @@
-import 'package:firmonec/config/app_config_firmonec.dart';
 import 'package:firmonec/config/config_api.dart';
+import 'package:firmonec/config/config_api_sign.dart';
 import 'package:firmonec/presentation/screens/login.dart';
 import 'package:firmonec/presentation/screens/quipux/demo_sign.dart';
 import 'package:firmonec/presentation/screens/quipux/documents_for_sign.dart';
@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   AppConfig(typeConfig: TypeConfig.development, typeApiFirma: TypeApiFirma.firmonec);
-  AppConfigFirmonec();
+  ConfigApiSign();
   runApp(MyApp());
 }
 

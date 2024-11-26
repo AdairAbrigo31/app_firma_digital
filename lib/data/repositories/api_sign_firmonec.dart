@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:firmonec/config/app_config_firmonec.dart';
+import 'package:firmonec/config/config_api_sign.dart';
 import 'package:firmonec/helpers/updateDocumentSignedHelper.dart';
 import 'package:http/http.dart' as http;
 import 'package:firmonec/domain/repositories/api_sign.dart';
@@ -11,7 +11,7 @@ class ApiSignFirmonec implements ApiSign {
   @override
   Future<Map<int, Uint8List>> getDocumentValidated({required String token}) async {
     final response = await http.get(
-      Uri.parse('${AppConfigFirmonec.instance.getUrlForSignLocal()}/$token'),
+      Uri.parse('${ConfigApiSign.instance.getUrlForSignLocal()}/$token'),
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 200) {
@@ -38,7 +38,7 @@ class ApiSignFirmonec implements ApiSign {
 
       // Enviar la solicitud PUT al servidor
       final response = await http.put(
-        Uri.parse('${AppConfigFirmonec.instance.getUrlForSignLocal()}/$token'),
+        Uri.parse('${ConfigApiSign.instance.getUrlForSignLocal()}/$token'),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {
           'json': jsonDocuments,
@@ -71,10 +71,10 @@ class ApiSignFirmonec implements ApiSign {
     Map<String, dynamic> data = GetTokenForSignHelper.createDataToJson(id: idUser, nameDocument: nameDocument, dataDocument: dataDocument);
     try {
       final response = await http.post(
-        Uri.parse(AppConfigFirmonec.instance.getUrlForSignLocal()),
+        Uri.parse(ConfigApiSign.instance.getUrlForSignLocal()),
         headers: {
           'Content-Type': 'application/json',
-          'X-API-KEY': AppConfigFirmonec.instance.getTokenApiSignLocal()
+          'X-API-KEY': ConfigApiSign.instance.getTokenApiSignLocal()
         },
         body: json.encode(data),
       );

@@ -1,9 +1,10 @@
+import 'package:firmonec/config/config_persistence_data.dart';
+import 'package:firmonec/domain/repositories/i_config_persistence_data.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/text_input_email_quipux.dart';
 import 'package:firmonec/presentation/screens/quipux/widget_quipux/text_input_password_quipux.dart';
 import 'package:firmonec/presentation/screens/without_quipux/signed_free.dart';
 import 'package:firmonec/presentation/widgets_app/login_button.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget{
   const Login({super.key});
@@ -13,11 +14,9 @@ class Login extends StatefulWidget{
 }
 
 class _LoginState extends State<Login>{
-
+  final IConfigPersistenceData configPersistenceData = ConfigPersistenceData.instance;
   String emailUser = "";
-
   String passwordUser = "";
-
 
   void _onEmailChanged(String value){
     setState(() {
@@ -50,19 +49,18 @@ class _LoginState extends State<Login>{
     if(!validateInputs()){
       return;
     }
-    // if(passwordController.text.isEmpty){
-    //   passwordError = "La contraseña está vacia";
-    // }
     if(await _validateCredentials()){
       await _saveCredentials(emailUser: emailUser, passwordUser: passwordUser);
+      if(!mounted){
+        return;
+      }
       Navigator.pushNamed(context, "/pre_configuration_id");
     }
   }
   
   Future<void> _saveCredentials({required String emailUser, required String passwordUser}) async {
-    final prefers = await SharedPreferences.getInstance();
-    await prefers.setString("emailUser", emailUser);
-    await prefers.setString("passwordUser", passwordUser);
+    await configPersistenceData.setEmailInPersistence(emailUser);
+    await configPersistenceData.setPasswordInPersistence(passwordUser);
   }
   
   @override

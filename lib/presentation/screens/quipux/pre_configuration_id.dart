@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../config/config_persistence_data.dart';
+import '../../../domain/repositories/i_config_persistence_data.dart';
+
 class PreConfigurationId extends StatefulWidget {
   const PreConfigurationId({super.key});
 
@@ -12,6 +15,7 @@ class PreConfigurationId extends StatefulWidget {
 }
 
 class _PreConfigurationIdState extends State<PreConfigurationId>{
+  final IConfigPersistenceData configPersistenceData = ConfigPersistenceData.instance;
   String idUser = "";
   final _formKey = GlobalKey<FormState>();
 
@@ -32,8 +36,7 @@ class _PreConfigurationIdState extends State<PreConfigurationId>{
   }
 
   Future<void> saveUserId(String idUser) async {
-    final prefers = await SharedPreferences.getInstance();
-    await prefers.setString("idUser", idUser);
+    await configPersistenceData.setIdUserInPersistence(idUser);
   }
 
   @override

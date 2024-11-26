@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:firmonec/config/config_persistence_data.dart';
+import 'package:firmonec/domain/repositories/i_config_persistence_data.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,6 +18,7 @@ class PreConfigurationCertificate extends StatefulWidget {
 }
 
 class _PreConfigurationCertificateState extends State<PreConfigurationCertificate> {
+  final IConfigPersistenceData configPersistenceData = ConfigPersistenceData.instance;
   List<String> selectedCertificates = [];
 
   @override
@@ -31,7 +34,7 @@ class _PreConfigurationCertificateState extends State<PreConfigurationCertificat
 
   Future<void> _loadCertificates() async {
     final prefs = await SharedPreferences.getInstance();
-    final savedCertificates = prefs.getStringList("certificates") ?? [];
+    final savedCertificates = await configPersistenceData.getCertificatesInPersistence() ?? [];
 
     // Filtrar solo los certificados que aún existen
     final validCertificates = <String>[];

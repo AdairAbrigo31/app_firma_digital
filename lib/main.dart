@@ -19,14 +19,15 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   Future<Widget> _selectView() async {
-    final prefs = await SharedPreferences.getInstance();
-    if(prefs.getString("emailUser") == null && prefs.getString("passwordUser") == null){
+    if(await ConfigPersistenceData.instance.getEmailInPersistence() == null &&
+        await ConfigPersistenceData.instance.getPasswordInPersistence() == null
+    ){
       return const Login();
     }
-    if(prefs.getString("idUser") == null){
+    if(await ConfigPersistenceData.instance.getIdUserInPersistence() == null){
       return const PreConfigurationId();
     }
-    if(prefs.getStringList("certificates") == null){
+    if(await ConfigPersistenceData.instance.getCertificatesInPersistence() == null){
       return const PreConfigurationCertificate();
     }
       return const DemoSign();

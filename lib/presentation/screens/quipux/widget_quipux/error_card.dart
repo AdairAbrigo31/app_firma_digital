@@ -3,7 +3,7 @@ import 'package:firmonec/data/providers/document_provider.dart';
 import 'package:flutter/material.dart';
 
 class ErrorCard extends StatelessWidget {
-  final ProviderFirmonec provider;
+  final IProvider provider;
 
   const ErrorCard({super.key, required this.provider});
 

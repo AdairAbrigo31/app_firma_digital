@@ -6,8 +6,6 @@ import 'package:firmonec/presentation/screens/quipux/documents_for_sign.dart';
 import 'package:firmonec/presentation/screens/quipux/pre_configuration_certificates.dart';
 import 'package:firmonec/presentation/screens/quipux/pre_configuration_id.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 
 void main() {
   ConfigApiSign();

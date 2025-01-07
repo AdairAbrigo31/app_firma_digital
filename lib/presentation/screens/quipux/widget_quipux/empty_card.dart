@@ -3,7 +3,7 @@ import 'package:firmonec/data/providers/document_provider.dart';
 import 'package:flutter/material.dart';
 
 class EmptyCard extends StatelessWidget {
-  final ProviderFirmonec provider;
+  final IProvider provider;
 
   const EmptyCard({super.key, required this.provider});
 

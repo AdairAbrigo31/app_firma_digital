@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../entities/IDocument.dart';
 
-abstract class ProviderFirmonec{
+abstract class IProvider{
   List<IDocument> documents();
   bool isLoading();
   String? error();

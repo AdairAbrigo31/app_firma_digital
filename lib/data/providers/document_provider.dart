@@ -8,7 +8,7 @@ import '../entities/document_reasignado.dart';
 import 'dart:convert';
 
 
-class DocumentProvider extends ChangeNotifier implements ProviderFirmonec{
+class DocumentProvider extends ChangeNotifier implements IProvider{
   List<IDocument> _documents = [];
   bool _isLoading = false;
   String? _error;

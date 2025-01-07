@@ -68,7 +68,7 @@ class _DemoSignState extends State<DemoSign> {
           ChangeNotifierProvider(create: (_) => DemoProvider()),
         ],
         child: Scaffold(
-          appBar: const AppBarFirmonec(),
+          appBar: const AppBarFirmonec(title: "Documentos por elaborar",),
           body: Consumer<DemoProvider>(
             builder: (context, provider, child) {
               if (provider.isLoading() && !provider.hasDocuments()) {

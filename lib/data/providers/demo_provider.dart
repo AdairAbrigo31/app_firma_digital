@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import '../../domain/entities/IDocument.dart';
 
 
-class DemoProvider extends ChangeNotifier implements ProviderFirmonec{
+class DemoProvider extends ChangeNotifier implements IProvider{
   List<IDocument> _documents = [];
   bool _isLoading = false;
   String? _error;
